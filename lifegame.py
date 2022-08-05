@@ -32,7 +32,7 @@ class Frame(tk.Frame):
 
         # キャンバス（実際に描画されるエリア）の設定
         self.canvassize = 720
-        self.rowcells = 75
+        self.rowcells = 15
         self.fps = 20
         self.milisec = int(1000 / self.fps)
 
@@ -42,7 +42,7 @@ class Frame(tk.Frame):
         self.canvas.grid()
 
         # 初期状態の設定
-        self.galaxy = [
+        self.galaxyinit = [
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -69,7 +69,10 @@ class Frame(tk.Frame):
         self.b.grid(row=1, column=0)
         self.b = tk.Button(self, text="Restart Game",
                            font=("", 14), command=self.restart)
-        self.b.grid(row=2, column=0)
+        self.b.grid(row=1, column=1)
+        self.b = tk.Button(self, text="Galaxy", font=(
+            "", 14), command=self.galaxy)
+        self.b.grid(row=1, column=2)
 
         # クリックした時にself.click関数を読む
         self.canvas.bind('<Button-1>', self.click)
@@ -93,11 +96,10 @@ class Frame(tk.Frame):
                 if i == 1:
                     self.canvas.create_rectangle(
                         x, y, x + w, y + w, fill="#2d5bff")
-                    self.canvas.grid()  # セルが生存なら描画
+                    self.canvas.grid(columnspan=3)  # セルが生存なら描画
                 m = m + 1
         if self.running:
             self.next()
-
         self.after(self.milisec, self.draw)
 
     # 次の世代の作成
@@ -172,6 +174,11 @@ class Frame(tk.Frame):
 
     def start(self):
         self.running = True
+
+    def galaxy(self):
+        self.running = False
+        self.state = True
+        self.cell = copy.copy(self.galaxyinit)
 
 
 app = App()
