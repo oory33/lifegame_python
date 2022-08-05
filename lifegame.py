@@ -26,9 +26,9 @@ class Frame(tk.Frame):
         self.pack()
 
         # インスタンス変数の設定
-        self.toggle = False
-        self.running = False
-        self.state = True
+        self.toggle = False  # マウスのクリックを受け取ったかどうか
+        self.running = False  # ループを実行しているかどうか
+        self.state = True  # !=self.runningと同義
 
         # キャンバス（実際に描画されるエリア）の設定
         self.canvassize = 720
@@ -98,7 +98,7 @@ class Frame(tk.Frame):
                         x, y, x + w, y + w, fill="#2d5bff")
                     self.canvas.grid(columnspan=3)  # セルが生存なら描画
                 m = m + 1
-        if self.running:
+        if self.running:  # ループが実行中なら次世代を計算し再度描画
             self.next()
         self.after(self.milisec, self.draw)
 
